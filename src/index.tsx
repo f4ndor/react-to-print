@@ -368,7 +368,12 @@ export default class ReactToPrint extends React.Component<IReactToPrintProps> {
                                 for (let j = 0, attrLen = node.attributes.length; j < attrLen; ++j) { // eslint-disable-line  max-len
                                     const attr = node.attributes[j];
                                     if (attr) {
-                                        newHeadEl.setAttribute(attr.nodeName, attr.nodeValue || "");
+                                        // Fix baseUrl issue
+                                        let value = attr.nodeValue || "";
+                                        if( attr.nodeName=== "href" && value && value.indexOf('/') === -1) {
+                                            value = `/${value}`;
+                                        }
+                                        newHeadEl.setAttribute(attr.nodeName, value);
                                     }
                                 }
 
